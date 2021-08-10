@@ -10,16 +10,16 @@ class ThingsActions(enum.Enum):
 class ThingsModel():
     # class variable; should not be in __init__ function because it is constant to the class, does not change by object
     model = {
-        "paragraph": ThingsActions.note,
-        "heading_1": ThingsActions.header,
-        "heading_2": ThingsActions.header,
-        "heading_3": ThingsActions.header,
-        "bulleted_list_item": ThingsActions.item,
-        "numbered_list_item": ThingsActions.item,
-        "to_do": ThingsActions.item,
-        "toggle": ThingsActions.children,
-        "child_page": ThingsActions.none,
-        "unsupported": ThingsActions.none
+        'paragraph': ThingsActions.note,
+        'heading_1': ThingsActions.header,
+        'heading_2': ThingsActions.header,
+        'heading_3': ThingsActions.header,
+        'bulleted_list_item': ThingsActions.item,
+        'numbered_list_item': ThingsActions.item,
+        'to_do': ThingsActions.item,
+        'toggle': ThingsActions.children,
+        'child_page': ThingsActions.none,
+        'unsupported': ThingsActions.none
     }
 
 

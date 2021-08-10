@@ -1,5 +1,7 @@
+from ThingsHelper import ThingsModel
+
 def main():
-    print("hello world!")
+    print(type(ThingsModel().get_action('paragraph')))
 
 if __name__ == "__main__":
     main()
