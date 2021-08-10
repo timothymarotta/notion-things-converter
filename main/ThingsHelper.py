@@ -1,4 +1,5 @@
 import enum
+from main.Helper import Helper
 
 class ThingsActions(enum.Enum):
     note = 1
@@ -22,9 +23,7 @@ class ThingsModel():
         'unsupported': ThingsActions.none
     }
 
-
-    # TODO need to check child blocks if value == .header or .item or .children (either convert to lists or just throw a single check or check every time)
-    # model keys will not be inserted, updated, or deleted, so these modifiers are unnecessary
+    # model keys will not be inserted, updated, or deleted, so only access modifiers are unnecessary
     
     # method to get action enum from model
     # PARAM action_name: string of block name
@@ -41,7 +40,15 @@ class ThingsModel():
         return self.model 
             
 # the methods of this class are to be used AFTER a block is retrieved from Notion to convert ONLY to Things 3; other destinations will require their own Helpers
-class ThingsHelper:
-    def __init__(self) -> None:
-        self.model = ThingsModel()
-             
+# implements Helper abstract class
+class ThingsHelper(Helper):
+    model = ThingsModel()
+
+    def convert_to_heading(self):
+        pass
+
+    def convert_to_notes(self):
+        pass
+
+    def convert_to_item(self):
+        pass
