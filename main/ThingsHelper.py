@@ -1,5 +1,5 @@
 import enum
-from main.Helper import Helper
+from Helper import Helper
 
 class ThingsActions(enum.Enum):
     note = 1
