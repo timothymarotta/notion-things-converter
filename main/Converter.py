@@ -20,12 +20,29 @@ class NotionParser():
             return None
         else:
             return response.json()
+
+    # method that produces a list of pages to select from
+    # NOTE: this method is for selecting a full set of data later on, API requires second call to get page contents
+    # PARAM json_database: JSON format of Notion database to be parsed
+    # RETURN list of table names
+    @classmethod
+    def extract_pages_from_json(self, json_database):
+        pass
             
+    # method that get the contents of a page from a database
+    # PARAM page_id: string used to reference a specific page from API
+    # RETURN page_content: JSON dictionary of page contents
+    @classmethod
+    def get_page_contents(self, page_id):
+        pass
 
 def main():
     database_id = config.DATABASE_KEY
     parsed = NotionParser()
-    print(parsed.get_database(database_id))
+
+    # pretty printing
+    to_format = parsed.get_database(database_id)
+    print(json.dumps(to_format, indent=4))
 
 
 if __name__ == "__main__":
