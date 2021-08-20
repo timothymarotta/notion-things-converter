@@ -10,11 +10,14 @@ class NotionParserTest(unittest.TestCase):
 
     # uses data from MockDatabase.json
     def test_extract_pages_from_json(self):
-        inFile = open('MockDatabase.json')
-        data = json.loads(inFile)
+        with open('./main/MockDatabase.json',) as inFile:
+            temp = inFile.read()
+            data = json.loads(temp)
+            
 
-        inExpected = open('ExtractPagesExpected.json')
-        expected = json.loads(inExpected)
+        with open('./main/ExtractPagesExpected.json',) as inExpected:
+            temp = inExpected.read()
+            expected = json.loads(temp)
 
         self.assertEqual(expected, self.parser.extract_pages_from_json(data))
 

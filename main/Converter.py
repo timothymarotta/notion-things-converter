@@ -7,15 +7,15 @@ class NotionParser():
     base_url = 'https://api.notion.com'
 
     headers = {
-        "Authorization": "Bearer " + config.INTEGRATION_KEY,
-        "Content-Type": "application/json",
-        "Notion-Version": "2021-05-13"
+        'Authorization': 'Bearer ' + config.INTEGRATION_KEY,
+        'Content-Type': 'application/json',
+        'Notion-Version': '2021-05-13'
     }   
 
     @classmethod
     def get_database(self, database_id):
         database_url = self.base_url + '/v1/databases/' + database_id + '/query'
-        response = requests.request("POST", database_url, headers=self.headers)
+        response = requests.request('POST', database_url, headers=self.headers)
         if response.status_code != 200:
             return None
         else:
@@ -27,7 +27,15 @@ class NotionParser():
     # RETURN list of table names
     @classmethod
     def extract_pages_from_json(self, json_database):
-        pass
+        results_only = json_database['results']
+        to_return = {'page_titles':[]}
+        for page in results_only:
+            duo = {}
+            # TODO these really should be search algorithms instead of hard coded, i just dont feel like it right not
+            duo['id'] = page['id']
+            duo['plain_text'] = page['properties']['Name']['title'][0]['plain_text']
+            to_return['page_titles'].append(duo)
+        return to_return
             
     # method that get the contents of a page from a database
     # PARAM page_id: string used to reference a specific page from API
@@ -42,7 +50,7 @@ def main():
 
     # pretty printing
     to_format = parsed.get_database(database_id)
-    print(json.dumps(to_format, indent=4))
+    print(json.dumps(parsed.extract_pages_from_json(to_format), indent=4))
 
 
 if __name__ == "__main__":
