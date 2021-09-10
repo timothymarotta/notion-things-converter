@@ -4,17 +4,18 @@ import json
 import config
 
 class NotionParser():
-    base_url = 'https://api.notion.com'
+    base_url = 'https://api.notion.com/'
+    version_no = 'v1/'
 
     headers = {
         'Authorization': 'Bearer ' + config.INTEGRATION_KEY,
         'Content-Type': 'application/json',
-        'Notion-Version': '2021-05-13'
+        'Notion-Version': '2021-08-16'
     }   
 
     @classmethod
     def get_database(self, database_id):
-        database_url = self.base_url + '/v1/databases/' + database_id + '/query'
+        database_url = self.base_url + self.version_no + 'databases/' + database_id + '/query'
         response = requests.request('POST', database_url, headers=self.headers)
         if response.status_code != 200:
             return None
@@ -37,12 +38,30 @@ class NotionParser():
             to_return['page_titles'].append(duo)
         return to_return
             
-    # method that get the contents of a page from a database
+    def select_page(self, page_set):
+        print('Please select a template number:')
+        page_list = page_set['page_titles']
+        for i in range(0, len(page_list)):
+            page_pair = page_list[i]
+            print(str(i+1) + ': ' + page_pair['plain_text'])
+        choice = int(input())
+        # TODO handle non-integer answers
+        # TODO handle out of range answers
+        return page_list[choice - 1]['id']
+
+    # method that get the contents of a page from a database; NOTE THIS IS NOT RETRIEVING THE PAGE, JUST ITS CONTENTS
     # PARAM page_id: string used to reference a specific page from API
     # RETURN page_content: JSON dictionary of page contents
     @classmethod
     def get_page_contents(self, page_id):
-        pass
+        page_url = self.base_url + self.version_no + 'blocks/' + page_id + '/children'
+        print(page_url)
+        response = requests.request('GET', page_url, headers=self.headers)
+        # if response.status_code != 200:
+        #     return type(response)
+        # else:
+        #     return response.json()
+        return response.json()
 
 def main():
     database_id = config.DATABASE_KEY
@@ -50,7 +69,10 @@ def main():
 
     # pretty printing
     to_format = parsed.get_database(database_id)
-    print(json.dumps(parsed.extract_pages_from_json(to_format), indent=4))
+    pages = parsed.extract_pages_from_json(to_format)
+    selected = parsed.select_page(pages)
+    template = parsed.get_page_contents(selected)
+    print(template)
 
 
 if __name__ == "__main__":
